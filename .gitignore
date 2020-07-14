@@ -1,0 +1,3 @@
+/swbrowser/csvs/
+*.pyc
+*.sqlite3

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block nav %}
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'csv_list' %}">CSV List</a>
+  </li>
+{% endblock %}
+
+{% block content %}
+  <h3>Collections</h3>
+  <hr>
+    <a href="{% url 'fetch' %}" class="btn btn-primary">
+      Fetch
+    </a>
+  <hr>
+  <table class="table">
+    {% if csvdownloads %}
+    <thead>
+      <tr>
+        <th>Filename</th>
+        <th>Downloaded at</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for csvdownload in csvdownloads %}
+      <tr>
+        <td><a href="{% url 'people_list' uuid=csvdownload.uuid %}">{{ csvdownload.uuid }}.csv</a></td>
+        <td>{{ csvdownload.downloaded_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    {% else %}
+      No CSV downloads yet, please use "Fetch" button.
+    {% endif %}
+  </table>
+{% endblock %}

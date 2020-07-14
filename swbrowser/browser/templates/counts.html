@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load listutils %}
+
+{% block nav %}
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'csv_list' %}">CSV List</a>
+  </li>
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'people_list' uuid=csvdownload.uuid %}">People List</a>
+  </li>
+{% endblock %}
+
+{% block content %}
+  <h3>People ({{ csvdownload.uuid }}.csv)</h3>
+  <hr>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      {% for column in columns %}
+        {% if column in headers %}
+          <a href="{% url 'counts' uuid=csvdownload.uuid %}?columns={{headers|remove:'count'|remove:column|join:','}}" type="button" class="btn btn-primary">
+            {{ column }}
+          </a>
+        {% else %}
+          <a href="{% url 'counts' uuid=csvdownload.uuid %}?columns={{headers|remove:'count'|add:column|join:','}}" type="button" class="btn btn-secondary">
+            {{ column }}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  <hr>
+  <table class="table">
+    <thead>
+    <tr>
+      {% for header in headers %}
+      <th>
+        {{ header }}
+      </th>
+      {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+      {% for row in counts %}
+        <tr>
+          {% for field in row %}
+            <td>
+              {{ field }}
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
